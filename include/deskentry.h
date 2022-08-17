@@ -26,6 +26,8 @@ SOFTWARE.
 #include <map>
 #include <string>
 #include <fstream>
+#include <thread>
+#include <chrono>
 
 class DeskEntry {
     public:

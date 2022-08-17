@@ -22,12 +22,17 @@ SOFTWARE.
 
 #include <cstdlib>
 #include <cstdio>
+#include <filesystem>
 #include "deskentry.h"
 
 int main(int argc, char** arv) {
-    std::map<std::string, std::string> test = DeskEntry::getEntries("/usr/share/applications/gimp.desktop");
-    for (std::map<std::string, std::string>::const_iterator it = test.begin(); it != test.end(); ++it) {
-        std::printf("%s || %s\n", it->first.c_str(), it->second.c_str());
+    for(auto const& it : std::filesystem::recursive_directory_iterator(std::filesystem::path("/usr/share/applications"))) {
+        try {
+            std::printf("%s\n", DeskEntry::getEntries(it.path()).at("Exec").c_str());
+        }
+        catch (std::out_of_range) {
+
+        }
     }
     return 0;
 }

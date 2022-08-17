@@ -24,12 +24,19 @@ SOFTWARE.
 #include <thread>
 #include <chrono>
 std::map<std::string, std::string> DeskEntry::getEntries(std::filesystem::path path) {
+    if (std::filesystem::is_directory(path)) {
+        return std::map<std::string, std::string>();
+    }
     std::fstream entry(path, std::ios::in);
     std::string line;
     std::map<std::string, std::string> entries;
     bool eof = false;
     bool comment = false;
     while (line != "[Desktop Entry]") {
+        if (entry.eof()) {
+            eof = true;
+            break;
+        }
         std::getline(entry, line);
     }
     while (!eof) {
